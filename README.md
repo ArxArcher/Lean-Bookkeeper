@@ -2,4 +2,4 @@
 A lean bookkeeping App - Fun with Angular!
 
 
-Early practice of Amazing javascript framwork Angular JS (https://angularjs.org/)
+Early practice of Amazing javascript framework Angular JS (https://angularjs.org/)
