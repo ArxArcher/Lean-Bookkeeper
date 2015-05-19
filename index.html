@@ -1,0 +1,209 @@
+﻿<!doctype html>
+<html lang="zh-tw" ng-app>
+<head>
+<meta charset="utf-8">
+<title>簡易記帳</title>
+	<link href="css/css.css" rel="stylesheet" type="text/css">
+	<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<script src="js/js.js"></script>
+	<script src="js/angular.min.js"></script>
+	<script src="js/jquery-1.11.1.min.js"></script>
+	<script src="js/jquery-ui-1.10.4.custom.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</head>
+	
+
+<body ng-controller="Ctrl">
+
+
+
+	<div id="upperList">
+    <div id="upperwarp">
+    	<h1 id="title">簡易記帳系統 | </h1><br>
+        <div id="tool">         
+        <form ng-submit="addExpense()">
+            <table>
+            <tr><td><span class="lightPurple">類別</span></td>
+            	<td><span class="lightPurple">項目</span></td>
+                <td><span class="lightPurple">金額</span></td>
+            </tr>
+            
+            <tr>            
+            <td><select ng-model="newExpenseType">
+                <option value="食">食</option>
+                <option value="衣">衣</option>
+                <option value="住">住</option>
+                <option value="行">行</option>
+            </select></td>
+            <td><input type="text" ng-model="newItem"></td>
+            <td><input type="number" ng-model="newExpense"></td>
+            <td>&nbsp;<input type="submit" value="新增" class="btn btn-info"></td>
+            </tr>
+            
+            </table>
+        </form>
+        </div>
+        
+    	<hr>
+        
+        <div id="result">
+            <span class="lightPurple">總計:{{summary() | currency: "NT "}}</span><br>
+            
+            
+            
+            <div class="progress">
+				<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{foodPercentage() | number:0}}%;">
+    			食 {{foodPercentage() | number:0}}%
+				</div>
+            </div>
+             
+   			<div class="progress">
+				<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{clothingPercentage() | number:0}}%; background-color: #EDD322;">
+    			衣 {{clothingPercentage() | number:0}}%
+				</div>
+            </div>
+            
+            <div class="progress">
+				<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{housingPercentage() | number:0}}%;">
+    			住 {{housingPercentage() | number:0}}%
+				</div>
+            </div>
+
+			<div class="progress">
+				<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{transportPercentage() | number:0}}%;">
+    			行 {{transportPercentage() | number:0}}%
+				</div>
+            </div>
+            
+		
+
+        </div>
+    </div>
+    </div>
+    
+    
+    
+    
+    
+    
+    <div id="warp">
+    <span class="grey">細項清單: 雙擊項目以修改內容</span><hr>
+    
+    <div id="food">
+    食<ul>
+		<li ng-repeat="expense in expenses | filter:'食'">
+        
+            <div ng-hide="expense.isEditing">
+            	<span ng-dblclick="edit(expense)">{{expense.item}} {{expense.amount | currency}}</span>
+            </div>
+        
+        	<div ng-show="expense.isEditing">            
+                <select ng-model="expense.type" value="expense.type">
+                    <option value="食">食</option>
+                    <option value="衣">衣</option>
+                    <option value="住">住</option>
+                    <option value="行">行</option>
+                </select>
+                
+                <input type="text" ng-model="expense.item" value="expense.item">
+                
+                <input type="number" ng-model="expense.amount" value="expense.amount">
+                <button ng-click="save(expense)" class="btn">儲存</button>
+                <button ng-click="del(expense)" class="btn">刪除</button>
+            </div>
+                    
+        </li>
+		</ul>
+    </div>
+    
+	<div id="clothing">
+    衣<ul>
+		<li ng-repeat="expense in expenses | filter:'衣'">
+        
+            <div ng-hide="expense.isEditing">
+            	<span ng-dblclick="edit(expense)">{{expense.item}} {{expense.amount | currency}}</span>
+            </div>
+        
+        	<div ng-show="expense.isEditing">            
+                <select ng-model="expense.type" value="expense.type">
+                    <option value="食">食</option>
+                    <option value="衣">衣</option>
+                    <option value="住">住</option>
+                    <option value="行">行</option>
+                </select>
+                
+                <input type="text" ng-model="expense.item" value="expense.item">
+                
+                <input type="number" ng-model="expense.amount" value="expense.amount">
+                <button ng-click="save(expense)" class="btn">儲存</button>
+                <button ng-click="del(expense)" class="btn">刪除</button>
+            </div>
+                    
+        </li>
+		</ul>
+    </div>
+    
+    <div id="housing">
+    住<ul>
+		<li ng-repeat="expense in expenses | filter:'住'">
+        
+            <div ng-hide="expense.isEditing">
+            	<span ng-dblclick="edit(expense)">{{expense.item}} {{expense.amount | currency}}</span>
+            </div>
+        
+        	<div ng-show="expense.isEditing">            
+                <select ng-model="expense.type" value="expense.type">
+                    <option value="食">食</option>
+                    <option value="衣">衣</option>
+                    <option value="住">住</option>
+                    <option value="行">行</option>
+                </select>
+                
+                <input type="text" ng-model="expense.item" value="expense.item">
+                
+                <input type="number" ng-model="expense.amount" value="expense.amount">
+                <button ng-click="save(expense)" class="btn">儲存</button>
+                <button ng-click="del(expense)" class="btn">刪除</button>
+            </div>
+                    
+        </li>
+		</ul>
+    </div>
+    
+    <div id="transport">
+    行<ul>
+		<li ng-repeat="expense in expenses | filter:'行'">
+        
+            <div ng-hide="expense.isEditing">
+            	<span ng-dblclick="edit(expense)">{{expense.item}} {{expense.amount | currency}}</span>
+            </div>
+        
+        	<div ng-show="expense.isEditing">            
+                <select ng-model="expense.type" value="expense.type">
+                    <option value="食">食</option>
+                    <option value="衣">衣</option>
+                    <option value="住">住</option>
+                    <option value="行">行</option>
+                </select>
+                
+                <input type="text" ng-model="expense.item" value="expense.item">
+                
+                <input type="number" ng-model="expense.amount" value="expense.amount">
+                <button ng-click="save(expense)" class="btn">儲存</button>
+                <button ng-click="del(expense)" class="btn">刪除</button>
+            </div>
+                    
+        </li>
+		</ul>
+    </div>
+    
+    </div>
+    
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+	<br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+    
+    
+    <div id="footer"><span class="lightPurple">簡易記帳系統 (c)2014 | powered by AngularJS & Bootstrap</span></div>
+</body>
+</html>
